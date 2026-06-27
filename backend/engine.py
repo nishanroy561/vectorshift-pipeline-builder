@@ -57,15 +57,7 @@ def topological_order(node_ids: set[str], edges: list[dict]) -> list[str] | None
 # Each takes (node_data, inputs, secrets) and returns {output_port: value}.
 
 async def _run_input(data, inputs, secrets):
-    value = data.get("value", "")
-    # Type "Number" coerces the text value to a real number for downstream math.
-    if data.get("inputType") == "Number":
-        try:
-            num = float(value)
-            value = int(num) if num.is_integer() else num
-        except (TypeError, ValueError):
-            pass
-    return {"value": value}
+    return {"value": data.get("value", "")}
 
 
 async def _run_text(data, inputs, secrets):

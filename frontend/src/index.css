@@ -383,24 +383,7 @@ code,
   box-shadow: var(--sh-lg);
   padding: 22px;
 }
-.vs-modal__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
 .vs-modal__title { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
-.vs-modal__x {
-  background: transparent; border: none; font-size: 22px; line-height: 1;
-  color: var(--ink-muted); cursor: pointer; padding: 0 4px;
-}
-.vs-modal__x:hover { color: var(--ink); }
-.vs-modal__note { margin: 0 0 16px; font-size: 12.5px; line-height: 1.5; color: var(--ink-muted); }
-.vs-modal__field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
-.vs-modal__label { font-family: var(--font-display); font-size: 13px; font-weight: 600; }
-.vs-modal__field .vs-field__input {
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  font-family: var(--font-mono);
-}
-.vs-modal__field .vs-field__input:focus { border-color: var(--markup); }
-.vs-modal__hint { font-size: 11px; color: var(--ink-faint); }
 .vs-modal__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
 .vs-modal__actions .vs-clear { border: 1px solid var(--hairline); border-radius: var(--radius); padding: 8px 15px; align-self: auto; }
 .vs-modal__actions .vs-run { padding: 8px 17px; }
@@ -1444,7 +1427,6 @@ code,
   .vs-dash__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
-  .vs-titleblock__sheet { display: none; }
   .vs-dash__grid { grid-template-columns: 1fr; }
   .vs-pg__inputs { width: 248px; }
 }

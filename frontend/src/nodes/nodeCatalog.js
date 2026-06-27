@@ -27,7 +27,7 @@ export const NODE_CATALOG = [
 ];
 
 // One-line "what this node does" blurbs, shown under each node's title.
-export const NODE_DESCRIPTIONS = {
+const NODE_DESCRIPTIONS = {
   customInput: 'Pass data of different types into your workflow.',
   fileInput: 'Read a text file and emit its contents.',
   api: 'Call an external HTTP endpoint and return the response.',

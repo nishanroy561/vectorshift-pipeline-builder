@@ -15,7 +15,7 @@ export const LLM_PROVIDERS = [
   { value: 'sambanova', label: 'SambaNova' },
 ];
 
-export const LLM_MODELS = {
+const LLM_MODELS = {
   groq: [
     'llama-3.3-70b-versatile',
     'llama-3.1-8b-instant',
@@ -82,7 +82,7 @@ export const EMBEDDER_PROVIDERS = [
   { value: 'openai', label: 'OpenAI' },
 ];
 
-export const EMBEDDER_MODELS = {
+const EMBEDDER_MODELS = {
   local: ['local-minilm'],
   google: ['text-embedding-004'],
   jina: ['jina-embeddings-v3', 'jina-embeddings-v2-base-en'],

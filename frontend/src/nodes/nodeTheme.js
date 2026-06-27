@@ -15,9 +15,6 @@ export const CATEGORIES = {
   sink:    { accent: '#4F6B9E', tint: '#E8EDF6', label: 'sink'    },
 };
 
-// The brand accent (indigo), used for the primary action + selection.
-export const MARKUP = '#5B45E0';
-
 export const categoryAccent = (category) =>
   (CATEGORIES[category] || CATEGORIES.data).accent;
 

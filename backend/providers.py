@@ -42,49 +42,6 @@ PROVIDERS = {
     },
 }
 
-# A few sensible default models so the UI has something to show per provider.
-# Mirrors the frontend's modelCatalog so the dropdowns and runtime agree.
-DEFAULT_MODELS = {
-    "groq": [
-        "llama-3.3-70b-versatile",
-        "llama-3.1-8b-instant",
-        "gemma2-9b-it",
-    ],
-    "openrouter": [
-        "anthropic/claude-3.5-sonnet",
-        "openai/gpt-4o",
-        "meta-llama/llama-3.3-70b-instruct",
-        "google/gemini-2.0-flash-001",
-        "deepseek/deepseek-chat",
-    ],
-    "google": [
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash",
-        "gemini-1.5-flash-8b",
-    ],
-    "cerebras": [
-        "llama-3.3-70b",
-        "llama3.1-8b",
-        "qwen-3-32b",
-    ],
-    "mistral": [
-        "mistral-small-latest",
-        "open-mistral-nemo",
-        "ministral-8b-latest",
-    ],
-    "together": [
-        "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-        "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-        "mistralai/Mixtral-8x7B-Instruct-v0.1",
-    ],
-    "sambanova": [
-        "Meta-Llama-3.3-70B-Instruct",
-        "Meta-Llama-3.1-8B-Instruct",
-    ],
-}
-
-
 class ProviderError(Exception):
     """Raised when an LLM provider call fails (bad key, bad model, network…)."""
 
