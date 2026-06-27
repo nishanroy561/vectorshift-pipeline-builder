@@ -1,0 +1,10 @@
+Vector databases store high-dimensional embeddings for similarity search.
+Cosine similarity ranks vectors by the angle between them.
+HNSW is a graph index that makes nearest-neighbor search fast.
+Keyword search matches exact words while semantic search matches meaning.
+Embeddings turn text into numbers a model can compare.
+Pinecone, Weaviate, and Qdrant are popular vector databases.
+Top K controls how many nearest matches a query returns.
+Chunking splits long documents into pieces before embedding them.
+RAG retrieves relevant context and feeds it to an LLM.
+Recall measures how many of the relevant items a search actually finds.

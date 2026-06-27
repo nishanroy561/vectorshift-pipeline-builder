@@ -1,0 +1,10 @@
+Reset your password from the account settings page under Security.
+The mobile app works offline and syncs once you reconnect.
+We offer a 30-day money-back guarantee on all paid plans.
+Customer support replies within one business day on weekdays.
+Your data is encrypted in transit and at rest.
+Invoices and receipts are available in the Billing section.
+You can invite teammates and assign roles from the Members tab.
+Exports are available as CSV, JSON, or PDF.
+Two-factor authentication can be enabled for extra protection.
+The free tier includes up to three active pipelines.

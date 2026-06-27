@@ -1,0 +1,167 @@
+{
+  "id": "pl_1782566758910",
+  "name": "KB test",
+  "nodes": [
+    {
+      "id": "customInput-1",
+      "type": "customInput",
+      "position": {
+        "x": 60,
+        "y": 60
+      },
+      "data": {
+        "id": "customInput-1",
+        "nodeType": "customInput",
+        "value": "What are the main points?"
+      },
+      "width": 244,
+      "height": 354,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 5.080955837586231,
+        "y": 209.8238907316587
+      },
+      "dragging": false
+    },
+    {
+      "id": "knowledgeBase-1",
+      "type": "knowledgeBase",
+      "position": {
+        "x": 394,
+        "y": 60
+      },
+      "data": {
+        "id": "knowledgeBase-1",
+        "nodeType": "knowledgeBase",
+        "documents": "Vector databases store high-dimensional embeddings for similarity search.\nCosine similarity ranks vectors by the angle between them.\nHNSW is a graph index that makes nearest-neighbor search fast.\nKeyword search matches exact words while semantic search matches meaning.\nEmbeddings turn text into numbers a model can compare.\nPinecone, Weaviate, and Qdrant are popular vector databases.\nTop K controls how many nearest matches a query returns.\nChunking splits long documents into pieces before embedding them.\nRAG retrieves relevant context and feeds it to an LLM.\nRecall measures how many of the relevant items a search actually finds."
+      },
+      "width": 248,
+      "height": 517,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 384.81106601104074,
+        "y": 80.14998254532941
+      },
+      "dragging": false
+    },
+    {
+      "id": "llm-1",
+      "type": "llm",
+      "position": {
+        "x": 732,
+        "y": 60
+      },
+      "data": {
+        "id": "llm-1",
+        "nodeType": "llm",
+        "apiKey": ""
+      },
+      "width": 244,
+      "height": 632,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 696.460934161817,
+        "y": 57.23412532268071
+      },
+      "dragging": false
+    },
+    {
+      "id": "customOutput-1",
+      "type": "customOutput",
+      "position": {
+        "x": 1066,
+        "y": 60
+      },
+      "data": {
+        "id": "customOutput-1",
+        "nodeType": "customOutput"
+      },
+      "width": 244,
+      "height": 409,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1057.7898296339083,
+        "y": 242.17438724998578
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "type": "step",
+      "source": "customInput-1",
+      "sourceHandle": "customInput-1-value",
+      "target": "knowledgeBase-1",
+      "targetHandle": "knowledgeBase-1-query",
+      "animated": false,
+      "style": {
+        "stroke": "#1F9E6F",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#1F9E6F"
+      },
+      "id": "reactflow__edge-customInput-1customInput-1-value-knowledgeBase-1knowledgeBase-1-query"
+    },
+    {
+      "type": "step",
+      "source": "knowledgeBase-1",
+      "sourceHandle": "knowledgeBase-1-context",
+      "target": "llm-1",
+      "targetHandle": "llm-1-context",
+      "animated": false,
+      "style": {
+        "stroke": "#C58A1B",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#C58A1B"
+      },
+      "id": "reactflow__edge-knowledgeBase-1knowledgeBase-1-context-llm-1llm-1-context"
+    },
+    {
+      "type": "step",
+      "source": "customInput-1",
+      "sourceHandle": "customInput-1-value",
+      "target": "llm-1",
+      "targetHandle": "llm-1-prompt",
+      "animated": false,
+      "style": {
+        "stroke": "#1F9E6F",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#1F9E6F"
+      },
+      "id": "reactflow__edge-customInput-1customInput-1-value-llm-1llm-1-prompt"
+    },
+    {
+      "type": "step",
+      "source": "llm-1",
+      "sourceHandle": "llm-1-response",
+      "target": "customOutput-1",
+      "targetHandle": "customOutput-1-value",
+      "animated": false,
+      "style": {
+        "stroke": "#5B45E0",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#5B45E0"
+      },
+      "id": "reactflow__edge-llm-1llm-1-response-customOutput-1customOutput-1-value"
+    }
+  ]
+}

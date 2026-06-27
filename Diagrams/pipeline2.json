@@ -1,0 +1,234 @@
+{
+  "id": "pl_1782566990842",
+  "name": "pipeline2",
+  "nodes": [
+    {
+      "id": "customInput-1",
+      "type": "customInput",
+      "position": {
+        "x": 60,
+        "y": 60
+      },
+      "data": {
+        "id": "customInput-1",
+        "nodeType": "customInput",
+        "inputName": "review",
+        "value": "Absolutely love this — best purchase I've made all year!"
+      },
+      "width": 244,
+      "height": 370,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 227.93403797455625,
+        "y": -213.8565189243426
+      },
+      "dragging": false
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "position": {
+        "x": 394,
+        "y": 60
+      },
+      "data": {
+        "id": "text-1",
+        "nodeType": "text",
+        "text": "Classify the sentiment of this review as exactly one word — POSITIVE or NEGATIVE:\n{{review}}"
+      },
+      "width": 460,
+      "height": 370,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 14.041309608213453,
+        "y": 296.78054357117264
+      },
+      "dragging": false
+    },
+    {
+      "id": "llm-1",
+      "type": "llm",
+      "position": {
+        "x": 944,
+        "y": 60
+      },
+      "data": {
+        "id": "llm-1",
+        "nodeType": "llm",
+        "apiKey": "",
+        "temperature": "0"
+      },
+      "width": 244,
+      "height": 532,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 518.903035788821,
+        "y": 103.02703794052172
+      },
+      "dragging": false
+    },
+    {
+      "id": "condition-1",
+      "type": "condition",
+      "position": {
+        "x": 1278,
+        "y": 60
+      },
+      "data": {
+        "id": "condition-1",
+        "nodeType": "condition",
+        "test": "value == \"POSITIVE\""
+      },
+      "width": 244,
+      "height": 301,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 823.379860078375,
+        "y": 159.87573253208313
+      },
+      "dragging": false
+    },
+    {
+      "id": "customOutput-1",
+      "type": "customOutput",
+      "position": {
+        "x": 1612,
+        "y": 60
+      },
+      "data": {
+        "id": "customOutput-1",
+        "nodeType": "customOutput"
+      },
+      "width": 244,
+      "height": 287,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1640.7542566709021,
+        "y": -20.785768742058423
+      },
+      "dragging": false
+    },
+    {
+      "id": "customOutput-2",
+      "type": "customOutput",
+      "position": {
+        "x": 1612,
+        "y": 391
+      },
+      "data": {
+        "id": "customOutput-2",
+        "nodeType": "customOutput"
+      },
+      "width": 244,
+      "height": 287,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1171.786310619767,
+        "y": 414.278962415683
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "type": "step",
+      "source": "customInput-1",
+      "sourceHandle": "customInput-1-value",
+      "target": "text-1",
+      "targetHandle": "text-1-input",
+      "animated": false,
+      "style": {
+        "stroke": "#1F9E6F",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#1F9E6F"
+      },
+      "id": "reactflow__edge-customInput-1customInput-1-value-text-1text-1-input",
+      "selected": false
+    },
+    {
+      "type": "step",
+      "source": "text-1",
+      "sourceHandle": "text-1-output",
+      "target": "llm-1",
+      "targetHandle": "llm-1-prompt",
+      "animated": false,
+      "style": {
+        "stroke": "#C58A1B",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#C58A1B"
+      },
+      "id": "reactflow__edge-text-1text-1-output-llm-1llm-1-prompt",
+      "selected": false
+    },
+    {
+      "type": "step",
+      "source": "llm-1",
+      "sourceHandle": "llm-1-response",
+      "target": "condition-1",
+      "targetHandle": "condition-1-value",
+      "animated": false,
+      "style": {
+        "stroke": "#5B45E0",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#5B45E0"
+      },
+      "id": "reactflow__edge-llm-1llm-1-response-condition-1condition-1-value",
+      "selected": false
+    },
+    {
+      "type": "step",
+      "source": "condition-1",
+      "sourceHandle": "condition-1-true",
+      "target": "customOutput-1",
+      "targetHandle": "customOutput-1-value",
+      "animated": false,
+      "style": {
+        "stroke": "#D24F6C",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#D24F6C"
+      },
+      "id": "reactflow__edge-condition-1condition-1-true-customOutput-1customOutput-1-value",
+      "selected": false
+    },
+    {
+      "type": "step",
+      "source": "condition-1",
+      "sourceHandle": "condition-1-false",
+      "target": "customOutput-2",
+      "targetHandle": "customOutput-2-value",
+      "animated": false,
+      "style": {
+        "stroke": "#D24F6C",
+        "strokeWidth": 1.75
+      },
+      "markerEnd": {
+        "type": "arrow",
+        "height": 15,
+        "width": 15,
+        "color": "#D24F6C"
+      },
+      "id": "reactflow__edge-condition-1condition-1-false-customOutput-2customOutput-2-value",
+      "selected": false
+    }
+  ]
+}

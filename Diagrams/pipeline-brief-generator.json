@@ -1,0 +1,63 @@
+{
+  "name": "Grounded brief generator",
+  "nodes": [
+    { "id": "customInput-1", "type": "customInput", "position": { "x": 40, "y": 40 },
+      "data": { "id": "customInput-1", "nodeType": "customInput", "inputName": "topic", "value": "vector databases" } },
+    { "id": "fileInput-1", "type": "fileInput", "position": { "x": 40, "y": 360 },
+      "data": { "id": "fileInput-1", "nodeType": "fileInput", "filename": "system.md", "content": "You are a precise technical writer. Write a tight 3-bullet brief grounded ONLY in the provided context. If the context is empty or irrelevant, say you don't have enough information." } },
+
+    { "id": "text-1", "type": "text", "position": { "x": 380, "y": 40 },
+      "data": { "id": "text-1", "nodeType": "text", "text": "Write a 3-bullet brief on {{topic}} using only the provided context." } },
+    { "id": "knowledgeBase-1", "type": "knowledgeBase", "position": { "x": 380, "y": 300 },
+      "data": { "id": "knowledgeBase-1", "nodeType": "knowledgeBase", "topK": 3,
+        "documents": "Vector databases store high-dimensional embeddings for similarity search.\nCosine similarity ranks vectors by the angle between them.\nHNSW is a graph index that makes nearest-neighbor search fast.\nKeyword search matches exact words while semantic search matches meaning.\nEmbeddings turn text into numbers a model can compare.\nPinecone, Weaviate, and Qdrant are popular vector databases.\nTop K controls how many nearest matches a query returns.\nChunking splits long documents into pieces before embedding them.\nRAG retrieves relevant context and feeds it to an LLM.\nRecall measures how many of the relevant items a search actually finds." } },
+    { "id": "vectorStore-1", "type": "vectorStore", "position": { "x": 380, "y": 720 },
+      "data": { "id": "vectorStore-1", "nodeType": "vectorStore", "topK": 3,
+        "documents": "Vector databases index embeddings so you can search by meaning, not keywords.\nAn embedding model maps text to a point in high-dimensional space.\nApproximate nearest-neighbour search keeps queries fast at scale.\nPinecone, Weaviate, Qdrant, and Milvus are popular vector stores.\nCosine similarity and dot product are common distance metrics.\nChunking and metadata filtering improve retrieval quality.\nHybrid search blends keyword and semantic ranking.\nRecall and latency are the usual trade-offs to tune." } },
+
+    { "id": "filter-1", "type": "filter", "position": { "x": 720, "y": 760 },
+      "data": { "id": "filter-1", "nodeType": "filter", "predicate": "len(item) > 10" } },
+    { "id": "loop-1", "type": "loop", "position": { "x": 1060, "y": 700 },
+      "data": { "id": "loop-1", "nodeType": "loop", "limit": 3 } },
+    { "id": "merge-1", "type": "merge", "position": { "x": 1400, "y": 420 },
+      "data": { "id": "merge-1", "nodeType": "merge" } },
+
+    { "id": "llm-1", "type": "llm", "position": { "x": 1740, "y": 140 },
+      "data": { "id": "llm-1", "nodeType": "llm", "provider": "groq", "model": "llama-3.3-70b-versatile", "temperature": "0.3", "apiKey": "" } },
+
+    { "id": "condition-1", "type": "condition", "position": { "x": 2120, "y": 120 },
+      "data": { "id": "condition-1", "nodeType": "condition", "test": "len(value) > 80" } },
+    { "id": "transform-1", "type": "transform", "position": { "x": 2120, "y": 520 },
+      "data": { "id": "transform-1", "nodeType": "transform", "expr": "len(value.split())" } },
+    { "id": "display-1", "type": "display", "position": { "x": 2120, "y": 800 },
+      "data": { "id": "display-1", "nodeType": "display" } },
+
+    { "id": "customOutput-1", "type": "customOutput", "position": { "x": 2480, "y": 60 },
+      "data": { "id": "customOutput-1", "nodeType": "customOutput", "outputName": "brief" } },
+    { "id": "customOutput-2", "type": "customOutput", "position": { "x": 2480, "y": 300 },
+      "data": { "id": "customOutput-2", "nodeType": "customOutput", "outputName": "too_short" } },
+    { "id": "customOutput-3", "type": "customOutput", "position": { "x": 2480, "y": 540 },
+      "data": { "id": "customOutput-3", "nodeType": "customOutput", "outputName": "sources" } },
+    { "id": "customOutput-4", "type": "customOutput", "position": { "x": 2480, "y": 780 },
+      "data": { "id": "customOutput-4", "nodeType": "customOutput", "outputName": "word_count" } }
+  ],
+  "edges": [
+    { "id": "e1",  "type": "step", "source": "customInput-1", "sourceHandle": "customInput-1-value", "target": "knowledgeBase-1", "targetHandle": "knowledgeBase-1-query" },
+    { "id": "e2",  "type": "step", "source": "customInput-1", "sourceHandle": "customInput-1-value", "target": "vectorStore-1", "targetHandle": "vectorStore-1-query" },
+    { "id": "e3",  "type": "step", "source": "customInput-1", "sourceHandle": "customInput-1-value", "target": "text-1", "targetHandle": "text-1-topic" },
+    { "id": "e4",  "type": "step", "source": "vectorStore-1", "sourceHandle": "vectorStore-1-matches", "target": "filter-1", "targetHandle": "filter-1-in" },
+    { "id": "e5",  "type": "step", "source": "filter-1", "sourceHandle": "filter-1-out", "target": "loop-1", "targetHandle": "loop-1-in" },
+    { "id": "e6",  "type": "step", "source": "knowledgeBase-1", "sourceHandle": "knowledgeBase-1-context", "target": "merge-1", "targetHandle": "merge-1-a" },
+    { "id": "e7",  "type": "step", "source": "loop-1", "sourceHandle": "loop-1-items", "target": "merge-1", "targetHandle": "merge-1-b" },
+    { "id": "e8",  "type": "step", "source": "merge-1", "sourceHandle": "merge-1-merged", "target": "llm-1", "targetHandle": "llm-1-context" },
+    { "id": "e9",  "type": "step", "source": "fileInput-1", "sourceHandle": "fileInput-1-content", "target": "llm-1", "targetHandle": "llm-1-system" },
+    { "id": "e10", "type": "step", "source": "text-1", "sourceHandle": "text-1-output", "target": "llm-1", "targetHandle": "llm-1-prompt" },
+    { "id": "e11", "type": "step", "source": "llm-1", "sourceHandle": "llm-1-response", "target": "condition-1", "targetHandle": "condition-1-value" },
+    { "id": "e12", "type": "step", "source": "llm-1", "sourceHandle": "llm-1-response", "target": "transform-1", "targetHandle": "transform-1-value" },
+    { "id": "e13", "type": "step", "source": "llm-1", "sourceHandle": "llm-1-response", "target": "display-1", "targetHandle": "display-1-value" },
+    { "id": "e14", "type": "step", "source": "condition-1", "sourceHandle": "condition-1-true", "target": "customOutput-1", "targetHandle": "customOutput-1-value" },
+    { "id": "e15", "type": "step", "source": "condition-1", "sourceHandle": "condition-1-false", "target": "customOutput-2", "targetHandle": "customOutput-2-value" },
+    { "id": "e16", "type": "step", "source": "loop-1", "sourceHandle": "loop-1-items", "target": "customOutput-3", "targetHandle": "customOutput-3-value" },
+    { "id": "e17", "type": "step", "source": "transform-1", "sourceHandle": "transform-1-result", "target": "customOutput-4", "targetHandle": "customOutput-4-value" }
+  ]
+}
