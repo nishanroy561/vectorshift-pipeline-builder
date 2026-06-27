@@ -4,7 +4,7 @@ Build AI workflows by **dragging boxes (“nodes”) onto a canvas and connectin
 
 Built with **React + ReactFlow** (the part you see) and **Python + FastAPI** (the part that does the work).
 
-![The pipeline editor running a Retrieval-Augmented (RAG) pipeline: an Input question flows into a Knowledge base, then an LLM, and the Output node shows the answer built from the documents.](Diagrams/kn-test.png)
+![The pipeline editor running a Retrieval-Augmented (RAG) pipeline: an Input question flows into a Knowledge base, then an LLM, and the Output node shows the answer built from the documents.](Diagrams/kb-test.png)
 
 > *Above: a question → Knowledge base → LLM → answer. Each box is a node; the lines are the data flowing between them.*
 
