@@ -1,162 +1,234 @@
-# VectorShift — Frontend Technical Assessment
+# VectorShift — Visual AI Pipeline Builder
 
-A full-stack pipeline builder with a drag-and-drop node editor, real-time DAG validation, and an LLM execution engine. Built with **React + ReactFlow** (frontend) and **Python + FastAPI** (backend).
+Build AI workflows by **dragging boxes (“nodes”) onto a canvas and connecting them with arrows** — like drawing a flowchart that actually runs. You can retrieve documents, call a language model (LLM), branch on conditions, and see the result, all without writing code.
 
-![Pipeline Editor](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)
+Built with **React + ReactFlow** (the part you see) and **Python + FastAPI** (the part that does the work).
+
+![The pipeline editor running a Retrieval-Augmented (RAG) pipeline: an Input question flows into a Knowledge base, then an LLM, and the Output node shows the answer built from the documents.](Diagrams/kn-test.png)
+
+> *Above: a question → Knowledge base → LLM → answer. Each box is a node; the lines are the data flowing between them.*
 
 ---
 
-## Quick Start
+## ⭐ Two ways to use this
 
-### Prerequisites
+| | Way 1 — Live demo (easiest) | Way 2 — Run it on your computer |
+|---|---|---|
+| **What** | Open a link in your browser | Install & run both halves yourself |
+| **Install anything?** | ❌ No | ✅ Node.js + Python |
+| **Best for** | Just trying it out | Editing the code / grading the assessment |
+| **Go to** | [**Way 1 ↓**](#-way-1--use-the-live-demo-no-install) | [**Way 2 ↓**](#-way-2--run-it-on-your-computer) |
 
-- **Node.js** ≥ 16 and **npm**
-- **Python** ≥ 3.10
-- **MongoDB Atlas** cluster (free tier works) — [create one here](https://www.mongodb.com/cloud/atlas)
+---
 
-### 1. Clone & set up environment variables
+## 🌐 Way 1 — Use the live demo (no install)
+
+👉 **Open this link:** **https://vectorshift-pipeline-builder-inky.vercel.app/**
+
+That’s it — it runs entirely in your browser, nothing to download.
+
+To actually **run** a language model you just need a **free key** (it’s your key, used only for your run, never stored):
+
+1. Get a free Groq key → https://console.groq.com/keys (sign in → “Create API Key” → copy the `gsk_…` value).
+2. On the page, drag in an **LLM** node (or click **Import** and load an example), then paste the key into the LLM node’s **API Key** box.
+3. Press **Run**. The right panel shows the result.
+
+> Want a quick win? Click **Import**, choose one of the example pipelines from this repo’s **`Diagrams/`** folder (e.g. `pipeline-brief-generator.json`), add your key to the LLM node, and hit **Run**.
+
+Now skip ahead to [**Step 3 — Try it**](#-step-3--try-it-the-fun-part). Everything there works on the live demo too.
+
+---
+
+## 💻 Way 2 — Run it on your computer
+
+### 🧒 The simple idea
+
+This project has **two halves** that run at the same time:
+
+1. **The backend** — a small Python server. It does the thinking (checking your pipeline, running it).
+2. **The frontend** — the website you click on in your browser.
+
+You’ll open **two terminal windows**: one starts the backend, one starts the frontend. Then you open your browser and play.
+
+> **Do I need a database?** No. The app works fully without one. A database (MongoDB) is only needed if you want the **“Save / My pipelines”** buttons to remember your work. You can skip it.
+
+### 📦 Step 0 — Install the two tools you need
+
+Do this once. Download and install both:
+
+| Tool | What it’s for | Download |
+|------|---------------|----------|
+| **Node.js** (version 16 or newer) | runs the website | https://nodejs.org → click the big **LTS** button |
+| **Python** (version 3.10 or newer) | runs the server | https://www.python.org/downloads → on Windows, **tick “Add Python to PATH”** during install |
+
+**Check they installed.** Open a terminal (Windows: search “PowerShell”; Mac: open “Terminal”) and type:
 
 ```bash
-git clone <repo-url>
-cd frontend_technical_assessment
+node -v
+python --version
 ```
 
-**Backend** — create `backend/.env` from the template:
+If each prints a number (like `v20.11.0` and `Python 3.11.5`), you’re good. If Python says “not found”, try `python3 --version` and use `python3` everywhere below.
+
+### ▶️ Step 1 — Start the backend (server)
+
+Open a terminal and type these **one at a time** (press Enter after each). Use the real path to where you put this folder.
 
 ```bash
-cp backend/.env.example backend/.env
+cd "path/to/frontend_technical_assessment/backend"
 ```
 
-Then fill in your MongoDB connection string:
+**Make a clean Python “sandbox” (recommended):**
 
-```env
-MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?appName=<app>
+<details>
+<summary><b>Windows (PowerShell)</b></summary>
+
+```powershell
+python -m venv venv
+venv\Scripts\Activate.ps1
 ```
+If you get a red “running scripts is disabled” error, run this once, then try `Activate.ps1` again:
+```powershell
+Set-ExecutionPolicy -Scope Process RemoteSigned
+```
+</details>
 
-**Frontend** — create `frontend/.env` from the template (optional — defaults to `localhost:8000`):
+<details>
+<summary><b>Mac / Linux</b></summary>
 
 ```bash
-cp frontend/.env.example frontend/.env
+python3 -m venv venv
+source venv/bin/activate
 ```
+</details>
 
-### 2. Start the backend
+**Install the server’s parts and start it:**
 
 ```bash
-cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-The API will be available at `http://localhost:8000`. Verify with: `curl http://localhost:8000/` → `{"Ping": "Pong"}`
+✅ **Success looks like:** `Uvicorn running on http://127.0.0.1:8000`.
+**Leave this terminal open and running.** Closing it stops the server.
 
-### 3. Start the frontend
+### ▶️ Step 2 — Start the frontend (website)
+
+Open a **second** terminal (keep the first one running). Type:
 
 ```bash
-cd frontend
+cd "path/to/frontend_technical_assessment/frontend"
 npm install
 npm start
 ```
 
-The app opens at `http://localhost:3000`.
+`npm install` downloads the website’s parts (takes a minute the first time). `npm start` launches it.
+
+✅ **Success looks like:** your browser opens at **http://localhost:3000** and you see the pipeline builder. If it doesn’t open by itself, type that address in your browser.
+
+🎉 **You’re running!**
 
 ---
 
-## Project Structure
+## 🧪 Step 3 — Try it (the fun part)
 
-```
-├── frontend/                   # React app (Create React App)
-│   ├── src/
-│   │   ├── nodes/              # Node components + abstraction layer
-│   │   │   ├── BaseNode.js     # Core node abstraction (Part 1)
-│   │   │   ├── fields.js       # Reusable field system
-│   │   │   ├── nodeTheme.js    # Category-based theming
-│   │   │   ├── nodeCatalog.js  # Node registry & metadata
-│   │   │   ├── textNode.js     # Text node with dynamic sizing (Part 3)
-│   │   │   └── ...             # 14+ node types
-│   │   ├── store.js            # Zustand state management
-│   │   ├── submit.js           # Pipeline validation & execution (Part 4)
-│   │   ├── index.css           # Full design system (Part 2)
-│   │   └── ...
-│   ├── .env.example            # Frontend env template
-│   └── package.json
-├── backend/                    # FastAPI server
-│   ├── main.py                 # API endpoints (parse, run, CRUD)
-│   ├── engine.py               # Pipeline execution engine
-│   ├── db.py                   # MongoDB connection (Motor async)
-│   ├── providers.py            # LLM provider integrations
-│   ├── .env.example            # Backend env template
-│   └── requirements.txt
-└── README.md
-```
+The fastest way to see it work is to load a ready-made pipeline:
 
----
+1. In the top toolbar, click **Import**.
+2. Pick **`Diagrams/pipeline-brief-generator.json`**.
+3. Click **Arrange** (bottom-left) to tidy it, then **Fit**.
+4. Click the **LLM** node and paste a free API key into its **API Key** box (see below).
+5. Press **Run** (top-right). The right panel opens automatically and shows the result.
 
-## Assessment Parts
+You can also build your own: drag an **Input**, a **Knowledge base**, an **LLM**, and an **Output** onto the canvas, draw arrows between their little circles, and run.
 
-### Part 1 — Node Abstraction
+Pipelines can also **branch**. Here a review is classified as POSITIVE/NEGATIVE, and a **Condition** node sends the result down a different path:
 
-All nodes extend a single [`BaseNode`](frontend/src/nodes/BaseNode.js) component that handles shared chrome (header, ports, fields, actions, run results). New nodes are created in **10–30 lines** by declaring only what differs:
+![A branching pipeline: Input → Text → LLM classifies sentiment → a Condition node routes the result to one of two Output nodes.](Diagrams/pipeline2.png)
 
-```jsx
-export const FilterNode = ({ id, data }) => (
-  <BaseNode
-    id={id} data={data}
-    category="data" title="Filter"
-    inputs={[{ id: `${id}-in`, label: 'in' }]}
-    outputs={[{ id: `${id}-out`, label: 'out' }]}
-    fields={[{ key: 'predicate', label: 'Predicate', type: 'text', default: 'item.score > 0.8' }]}
-  />
-);
-```
+### 🔑 Get a FREE key to run the LLM
 
-**14 new node types** built on this abstraction (5 were required): Filter, Math, API Request, Condition, Note, File Upload, Embedder, Transform, Display, Knowledge Base, Vector Store, MongoDB, Loop, Merge.
+Paste a free API key into the **LLM node’s “API Key” box**. The easiest:
 
-### Part 2 — Styling
+- **Groq** → https://console.groq.com/keys (key starts with `gsk_`).
 
-A complete 1,400+ line [design system](frontend/src/index.css) with:
-- Custom typography (Space Grotesk, Hanken Grotesk, JetBrains Mono)
-- Category-colored node spines (source/compute/data/logic/sink)
-- Smooth transitions, hover effects, and micro-animations
-- Responsive layout with sidebar, toolbar, and canvas
+It also supports Google Gemini, Cerebras, Mistral, Together, and SambaNova — pick the provider in the LLM node’s dropdown, then paste that provider’s key. Your key is used only for the call and is **not saved** to any server.
 
-### Part 3 — Text Node Logic
+> No key yet? You can still build pipelines, **Check** them (counts + DAG validation), and run the offline nodes (Knowledge base, Vector store, Math, etc.) without a key.
 
-[`TextNode`](frontend/src/nodes/textNode.js) implements:
-- **Dynamic sizing** — width grows with the longest line, height auto-expands with textarea scroll height
-- **Variable extraction** — `{{ variableName }}` creates a labeled input Handle on the left side using a regex that validates JS identifier syntax
+### 📚 Using documents (Knowledge base & Vector store)
 
-### Part 4 — Backend Integration
+The **`samples/`** folder has ready-to-use document files:
 
-- [`submit.js`](frontend/src/submit.js): "Check pipeline" button sends `{ nodes, edges }` to `/pipelines/parse`
-- [`main.py`](backend/main.py): Endpoint returns `{ num_nodes, num_edges, is_dag }` using Kahn's algorithm
-- A toast notification displays the results in a user-friendly format
+- `samples/knowledge-base.txt` — facts about vector databases (for the **Knowledge base** node)
+- `samples/vector-store.txt` — support-style snippets (for the **Vector store** node)
+
+On either node, click **⬆ Upload** and pick the file (or drag the file onto the documents box). Each line becomes one document.
 
 ---
 
-## Environment Variables
+## 🗂️ What’s in each folder
 
-### Frontend (`frontend/.env`)
-
-| Variable | Default | Description |
-|---|---|---|
-| `REACT_APP_API_URL` | `http://localhost:8000` | Backend API base URL (no trailing slash) |
-
-### Backend (`backend/.env`)
-
-| Variable | Default | Description |
-|---|---|---|
-| `MONGO_URI` | *(required)* | MongoDB connection string |
-| `MONGO_DB` | `vectorshift` | Database name |
-| `CORS_ORIGINS` | `http://localhost:3000` | Comma-separated allowed origins |
+| Folder / file | What it is |
+|---------------|------------|
+| `frontend/` | The website (React). Source code lives in `frontend/src`. |
+| `backend/` | The Python server (FastAPI). |
+| `samples/` | Document files to upload into Knowledge base / Vector store nodes. |
+| `Diagrams/` | Example pipelines you can **Import** (`*.json`) plus screenshots (`*.png`). |
+| `backend/.env.example` | Template for backend settings (copy to `backend/.env` if you use a database). |
+| `frontend/.env.example` | Template for the frontend (only if your backend isn’t on `localhost:8000`). |
 
 ---
 
-## Features Beyond the Assessment
+## 💾 Optional — turn on Save / “My pipelines” (needs a database)
 
-- **Pipeline execution engine** — run pipelines end-to-end with real LLM calls (Groq, OpenRouter)
-- **Pipeline persistence** — save/load pipelines to MongoDB Atlas
-- **Export / Import** — download pipelines as JSON, import them back
-- **Node catalog gallery** — visual parts-bin with categories
-- **Auto-layout** — Kahn's-algorithm-based left-to-right arrangement
-- **Run inspector** — click a node after a run to see its output
-- **Playground mode** — fill inputs and view outputs in a split-pane view
+Skip unless you want the app to remember saved pipelines.
+
+1. Make a **free** MongoDB database at https://www.mongodb.com/cloud/atlas and copy its connection string.
+2. In `backend/`, copy the template and fill it in:
+   ```bash
+   # Windows:   copy .env.example .env
+   # Mac/Linux: cp .env.example .env
+   ```
+   Open `backend/.env` and set:
+   ```env
+   MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?appName=<app>
+   ```
+3. Restart the backend (`Ctrl + C`, then `uvicorn main:app --reload` again).
+
+Now **Save** and **My pipelines** work.
+
+---
+
+## 🆘 Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| `python` not found | Try `python3`. On Windows, reinstall Python and tick **“Add Python to PATH.”** |
+| `uvicorn` not found | Run `pip install -r requirements.txt` again (and make sure you’re in the `backend` folder). |
+| Website loads but **Run/Check** says “can’t reach the server” | The backend terminal isn’t running — go back to Step 1. |
+| PowerShell blocks `Activate.ps1` | Run `Set-ExecutionPolicy -Scope Process RemoteSigned`, then try again. |
+| LLM node errors “No API key” | Paste a free key into the LLM node’s **API Key** box. |
+| Port already in use | Start the backend elsewhere: `uvicorn main:app --reload --port 8001`, then put `REACT_APP_API_URL=http://localhost:8001` in `frontend/.env`. |
+
+---
+
+## 🧠 What this project demonstrates (the assessment)
+
+Built for the VectorShift frontend assessment — all four parts implemented:
+
+1. **Node abstraction** — every node is one shared `BaseNode` + a small declarative `fields` list, so a new node is ~10 lines. **18 node types** are included (the brief asked for 5).
+2. **Styling** — a unified, modern design (white node cards, a category-tabbed parts bar, a side inspector).
+3. **Text node logic** — the Text node **grows** as you type, and typing `{{ variable }}` adds a matching **input handle** on its left.
+4. **Backend integration** — **Check pipeline** sends the graph to `/pipelines/parse`; the backend returns `{ num_nodes, num_edges, is_dag }`, shown in an alert.
+
+Beyond the brief: a real **run engine** (executes the pipeline through LLM/retrieval/logic nodes), **Import/Export**, **Auto-arrange**, and optional **MongoDB** persistence.
+
+---
+
+## ⚙️ Tech summary
+
+- **Frontend:** React 18, ReactFlow 11, Zustand (state). Runs on **:3000**.
+- **Backend:** FastAPI, Uvicorn, Motor (MongoDB), httpx. Runs on **:8000**. Needs **Python 3.10+**.
+- **Config (all optional for local use):** `REACT_APP_API_URL` (frontend) and `MONGO_URI` / `CORS_ORIGINS` (backend).
+- **Live demo:** https://vectorshift-pipeline-builder-inky.vercel.app/
