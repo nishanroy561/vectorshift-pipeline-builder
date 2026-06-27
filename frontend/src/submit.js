@@ -257,6 +257,15 @@ export const WorkspaceTools = () => {
       const { num_nodes, num_edges, is_dag } = await response.json();
       setStatus(is_dag ? 'dag' : 'cyclic');
 
+      // The assessment asks for an alert with the parse result; the toast below
+      // is the nicer in-app version of the same information.
+      window.alert(
+        `Pipeline summary\n\n` +
+        `Nodes:  ${num_nodes}\n` +
+        `Edges:  ${num_edges}\n` +
+        `Is DAG: ${is_dag ? 'Yes ✓' : 'No ✗'}`
+      );
+
       notify(
         `${num_nodes} node${num_nodes === 1 ? '' : 's'} · ${num_edges} edge${num_edges === 1 ? '' : 's'} — ` +
         (is_dag ? 'Valid DAG, no cycles.' : 'Cyclic — the pipeline feeds back on itself.'),
