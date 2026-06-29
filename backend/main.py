@@ -22,6 +22,9 @@ _origins = [o.strip() for o in _env_origins.split(",") if o.strip()] if _env_ori
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
+    # Also allow any *.vercel.app deployment (production, -inky alias, previews)
+    # so the hosted frontend works without pinning an exact origin.
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
 )
